@@ -8,23 +8,21 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    // GET /articles (Pagination)
     public function index(Request $request)
     {
-        $limit = $request->query('limit', 10); // Default 10
+        $limit = $request->query('limit', 10);
         $articles = Article::with('category')->paginate($limit);
 
         return response()->json($articles, 200);
     }
 
-    // POST /articles (Create & Validate)
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'author' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id', // Validasi kategori valid
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $article = Article::create($validated);
@@ -32,7 +30,6 @@ class ArticleController extends Controller
         return response()->json($article->load('category'), 201);
     }
 
-    // GET /articles/{id} (Detail)
     public function show($id)
     {
         $article = Article::with('category')->find($id);
@@ -44,7 +41,6 @@ class ArticleController extends Controller
         return response()->json($article, 200);
     }
 
-    // PUT /articles/{id} (Update)
     public function update(Request $request, $id)
     {
         $article = Article::find($id);
@@ -63,7 +59,6 @@ class ArticleController extends Controller
         return response()->json($article, 200);
     }
 
-    // DELETE /articles/{id}
     public function destroy($id)
     {
         $article = Article::find($id);
@@ -77,26 +72,28 @@ class ArticleController extends Controller
         return response()->json(['message' => 'Artikel berhasil dihapus'], 200);
     }
 
-    // GET /articles/search (Search & Advanced Filter)
     public function search(Request $request)
     {
         $query = Article::with('category');
 
-        // Filter berdasarkan kategori
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        // Pencarian berdasarkan kata kunci di Judul ATAU Konten (Bonus Lanjutan)
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'LIKE', "%{$keyword}%")
-                    ->orWhere('content', 'LIKE', "%{$keyword}%");
+                $q->where('title', 'LIKE', "%{$keyword}%");
             });
         }
 
-        // Filter berdasarkan rentang tanggal (Bonus Lanjutan)
+        if ($request->has('author')) {
+            $author = $request->author;
+            $query->where(function ($a) use ($author) {
+                $a->where('author', 'LIKE', "%{$author}%");
+            });
+        }
+
         if ($request->has('start_date') && $request->has('end_date')) {
             $query->whereBetween('created_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
         }
