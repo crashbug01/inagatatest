@@ -95,6 +95,6 @@ Aplikasi Anda sekarang aktif dan dapat diakses di: http://127.0.0.1:8000
 Untuk melihat demonstrasi langsung cara menjalankan aplikasi dari awal serta simulasi pengujian seluruh endpoint API, silakan tonton video berikut:
 https://drive.google.com/file/d/1qStexBVj4TjyeN_UqBgwpeIUt62TNItL/view?usp=drive_link
 
-## 📑 Dokumentasi & Koleksi Postman API
+## 📑 Postman
 
 https://documenter.getpostman.com/view/54915556/2sBXqRiwUP#ed66bc1b-8157-4e62-900e-994f3f16ce48
