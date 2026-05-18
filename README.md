@@ -1,58 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Markdown
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Blog API dengan Kategori, Pagination, dan Pencarian Lanjutan
 
-## About Laravel
+RESTful API untuk sistem manajemen blog yang memungkinkan pengguna untuk mengelola artikel (CRUD) dan kategori. API ini dibangun menggunakan **Laravel 11** dan **MySQL** sebagai sistem manajemen basis datanya, serta dilengkapi dengan fitur validasi input, pagination otomatis, dan pencarian lanjutan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Manajemen Kategori:** Membuat dan menampilkan daftar kategori artikel.
+2. **Manajemen Artikel:** Operasi CRUD penuh (Create, Read, Update, Delete) untuk artikel.
+3. **Validasi Data:** Proteksi input data kosong dan validasi relasi `category_id` yang wajib terdaftar di database MySQL (_Foreign Key Integrity_).
+4. **Pagination Semantik:** Pengambilan daftar artikel berskala besar menggunakan parameter `page` dan `limit` dengan metadata pagination standar industri.
+5. **Pencarian Lanjutan (Bonus):** Penyaringan artikel secara fleksibel berdasarkan `category_id`, kata kunci (`keyword`) pada judul & konten, hingga filter rentang tanggal (`start_date` & `end_date`).
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Persyaratan Sistem
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Sebelum menjalankan aplikasi, pastikan komputer Anda sudah terpasang:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP >= 8.2
+- Composer >= 2.0
+- MySQL Server (XAMPP / Laragon / Docker)
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 💻 Panduan Instalasi & Menjalankan Aplikasi
+
+Ikuti langkah-langkah berikut untuk menjalankan proyek di lingkungan lokal Anda:
+
+### 1. Kloning Repositori & Masuk ke Direktori
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone [https://github.com/username/blog-api-laravel.git](https://github.com/username/blog-api-laravel.git)
+cd blog-api-laravel
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependensi PHP via Composer
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Salin Konfigurasi Lingkungan (.env)
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Konfigurasi Database Lokal
 
-## Security Vulnerabilities
+Buka file .env yang baru dibuat menggunakan kode editor Anda, lalu sesuaikan pengaturan database dengan MySQL lokal Anda:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_anda
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+(Pastikan Anda sudah membuat database kosong bernama nama_database_anda di phpMyAdmin atau aplikasi klien database Anda sebelum melangkah ke tahap berikutnya).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Install Komponen API
+
+```bash
+php artisan install:api
+```
+
+### 7. Jalankan Migrasi Database
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 8. Jalankan Server Aplikasi
+
+```bash
+php artisan serve
+```
+
+Aplikasi Anda sekarang aktif dan dapat diakses di: http://127.0.0.1:8000
+
+## 📽️ Link Video Demo Aplikasi
+
+Untuk melihat demonstrasi langsung cara menjalankan aplikasi dari awal serta simulasi pengujian seluruh endpoint API, silakan tonton video berikut:
+https://drive.google.com/file/d/1qStexBVj4TjyeN_UqBgwpeIUt62TNItL/view?usp=drive_link
+
+## 📑 Dokumentasi & Koleksi Postman API
+
+https://documenter.getpostman.com/view/54915556/2sBXqRiwUP#ed66bc1b-8157-4e62-900e-994f3f16ce48
